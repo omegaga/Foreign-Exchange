@@ -12,9 +12,6 @@ import os
 import re
 
 
-TIMESLOT_LEN = timedelta(hours=1)
-
-
 class Processor:
     """ Processor for currency data to prepare data for classification """
 
@@ -39,16 +36,16 @@ class Processor:
         r = re.search('[A-Z]{6}', filename)
         return r.group()
 
-    def __aggregate_data(self, file_obj, curpair, data):
+    def __aggregate_data(self, file_obj, curpair, timeslot_len, data):
         """ Read a CSV file and aggregate data in timeslot view """
         first = True
         current_data = []
-        for line_str in file_obj.readline():
+        for line_str in file_obj:
             row = self.__parse_line(line_str)
             if first:
                 # Initialize start time
                 start_time = datetime(row[1].year, row[1].month, 1)
-                current_timebound = start_time + TIMESLOT_LEN
+                current_timebound = start_time + timeslot_len
                 first = False
                 continue
 
@@ -63,7 +60,7 @@ class Processor:
                     # Smooth data if no data found in current timeslot
                     if len(data) > 0:
                         data[current_timebound][curpair] = {}
-                        last_timebound = current_timebound - TIMESLOT_LEN
+                        last_timebound = current_timebound - timeslot_len
                         if last_timebound in data:
                             data[current_timebound][curpair] =\
                                 deepcopy(data[last_timebound][curpair])
@@ -78,7 +75,7 @@ class Processor:
                         'ask_min': min([e[3] for e in current_data]),
                         'ask_opn': current_data[0][3],
                         'ask_cls': current_data[-1][3]}
-                current_timebound += TIMESLOT_LEN
+                current_timebound += timeslot_len
                 current_data = []
 
     def __print_result(self, fp, seq, est_curpair):
@@ -109,6 +106,7 @@ class Processor:
         est_curpair = kwargs.get('estimate_curpair', 'EURUSD')
         output_file = kwargs.get('output', 'output')
         window_size = kwargs.get('window_size', 3)
+        timeslot_len = timedelta(minutes=kwargs.get('timeslot_len', 60))
 
         # Extract zip files from directory
         zipfiles = [
@@ -131,6 +129,7 @@ class Processor:
                         self.__aggregate_data(
                             file_obj,
                             self.__get_currency_pair(filename),
+                            timeslot_len,
                             data)
 
                 # Iterate data with a sliding window, for each sequence, the
