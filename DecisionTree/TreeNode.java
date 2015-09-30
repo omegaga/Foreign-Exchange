@@ -37,7 +37,10 @@ public class TreeNode {
     double score = 0;
     for (int i = 0; i < 2; ++i) {
       double p = ((double)labelCount[i]) / sampleCount;
-      score += -p * (Math.log(p) / Math.log(2));
+      if (p == 0)
+        score += 0;
+      else
+        score += -p * (Math.log(p) / Math.log(2));
     }
 
     this.entropy = score;
