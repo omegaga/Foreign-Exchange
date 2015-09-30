@@ -15,6 +15,7 @@ def main():
     p.process(sys.argv[1],
               output=config.OUTPUT_FILE,
               estimate_curpair=config.ESTIMATE_CURPAIR,
+              feature_curpairs=config.FEATURE_CURPAIRS,
               window_size=config.WINDOW_SIZE,
               timeslot_len=config.TIMESLOT_LEN)
 
