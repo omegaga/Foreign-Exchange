@@ -1,6 +1,4 @@
-# Foreign-Exchange
-Please download data from CMU Box
-
+# Data Preparation
 ## Organization:
 This program consists of the following files:
 
