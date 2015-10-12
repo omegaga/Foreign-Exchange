@@ -152,7 +152,7 @@ public class TreeNode {
   /**
    * Split the tree with selected feature and threshold
    */
-  public Boolean splitTree() {
+  public void splitTree() {
     List<DataRow> leftData =
         this.dataMatrix.stream()
             .filter(x -> x.features.get(selectedFeature) < selectedThreshold)
@@ -169,8 +169,6 @@ public class TreeNode {
     Set<Integer> rightRemainFeatures = new HashSet<>(this.remainFeatures);
 
     this.rightChild = new TreeNode(rightRemainFeatures, rightData);
-
-    return true;
   }
 
   /**

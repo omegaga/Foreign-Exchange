@@ -7,7 +7,7 @@ import java.util.*;
 /**
  * Created by Jianhong Li on 9/28/15.
  */
-public class DecisionTree {
+public class Main {
   public static List<DataRow> readFile (String filename)
       throws IOException {
     BufferedReader br = new BufferedReader(new FileReader(filename));
@@ -50,7 +50,7 @@ public class DecisionTree {
 
   public static void main (String[] args) throws IOException {
     // Read data
-    String trainingFilename = "training.txt";
+    String trainingFilename = "training";
     List<DataRow> dataMatrix = readFile(trainingFilename);
 
     // Construct Decision tree with training data set
@@ -62,7 +62,7 @@ public class DecisionTree {
     root.construct();
 
     // Validate test data
-    String testingFilename = "testing.txt";
+    String testingFilename = "testing";
     validate(root, testingFilename);
   }
 }
