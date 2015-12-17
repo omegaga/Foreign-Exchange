@@ -1,0 +1,12 @@
+indexPath=../Data/index
+queryFilePath=input_query/query
+trecEvalOutputPath=query_result/test_indri_out
+retrievalAlgorithm=Indri
+Indri:mu=1000
+Indri:lambda=0.7
+fb=true
+fbDocs=10
+fbTerms=10
+fbMu=1000
+fbOrigWeight=0.5
+fbExpansionQueryFile=input_query/expquery
